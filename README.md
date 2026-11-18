@@ -8,21 +8,9 @@ One sentence in the notes calls a group of sailors “Apolloite (aka Lathanderan
 
 ## Where the workflow makes decisions
 
-```mermaid
-flowchart TD
-    source["Complete campaign document"] --> discovery["Discovery model proposes names in the source"]
-    source --> layout["Markdown parser locates passages; Jev resolves ambiguous structure"]
-    discovery --> alias["Jev compares pairs of names"]
-    alias --> grouping["Code groups supported aliases and flags conflicts"]
-    grouping --> qualify{"Does this candidate qualify as an entity?"}
-    layout -->|Map place proposals| qualify
-    qualify -->|Supported yes| type["Ask Jev for one of seven entity types"]
-    qualify -->|Rejected or unresolved| record["Retain decision and evidence"]
-    type -->|Supported type| entity["Save a document-local entity"]
-    type -->|Unresolved| record
-    layout --> context["Evaluate passages and follow a continuing subject"]
-    entity --> context
-```
+![Workflow from a campaign document through name discovery, alias resolution and qualification to entities and their supporting passages.](Resources/portfolio/diagrams/document-workflow.png)
+
+[Editable Mermaid source](Resources/portfolio/diagrams/document-workflow.mmd)
 
 The arrows show data dependencies across capability runs. On the supported classification path, an answer changes which question the system asks next. During passage association, a positive subject decision can open another question about the following block, even when it uses a pronoun. The workflow can follow that subject until it runs out of supported continuations or reaches the section boundary. [Classification gate](src/domains/document/classification/catalog-operation.ts#L125-L129) · [Continuation planner](src/domains/document/association/planning.ts#L290-L333) · [Durable workflow](src/workflows/process-document.ts#L125-L154)
 

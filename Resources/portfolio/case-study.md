@@ -15,16 +15,9 @@ In Adventurers Pub, deciding that two names belong to the same entity changes wh
 
 A passage can introduce a character by name and refer to her as “she” in the next paragraph. I made the association stage follow that subject one block at a time. The diagram shows the supported-policy path. In exploratory runs, a provisional positive can also trigger the next question. The model judges whether the subject continues. Code tracks which questions have already been asked, enforces section boundaries, and saves each round and its decisions. This is an implemented branch of the association workflow. The measured six-document trial below covers the earlier classification stages. [Planner](../../src/domains/document/association/planning.ts#L286-L333) · [Round records and stop condition](../../src/domains/document/association/operation.ts#L236-L272)
 
-```mermaid
-flowchart TD
-    start["A block has a supported subject"] --> next{"Unvisited next block in this section?"}
-    next -->|No| done["End this chain"]
-    next -->|Yes| ask["Ask whether the next block continues this subject"]
-    ask --> decision{"Supported yes?"}
-    decision -->|Yes| advance["Record decision and advance one block"]
-    advance --> next
-    decision -->|No or unresolved| stop["Record decision and stop this chain"]
-```
+![A supported subject triggers a question about the next block in the section. A positive answer advances one block. Otherwise the chain ends.](diagrams/subject-continuation.png)
+
+[Editable Mermaid source](diagrams/subject-continuation.mmd)
 
 The same distinction between judgment and action matters when creating records. In one live trial across documents 01–06, the system withheld 57 conflicting groups before qualification. Of 284 qualification questions, 229 led to type questions and 220 produced local records. A local record carries the source hash, names, evidence, and both decision IDs. The counts show how many records passed the policy. Source review is a separate test of whether those records are right. [Run excerpts](classification-runs.json#L2-L7) · [Record construction](../../src/domains/document/classification/catalog-operation.ts#L552-L580) · [Offline recount](score-results.mjs#L8-L18)
 

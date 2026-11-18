@@ -1,0 +1,13 @@
+flowchart TD
+    source["Complete campaign document"] --> discovery["Discovery model proposes names in the source"]
+    source --> layout["Markdown parser locates passages; Jev resolves ambiguous structure"]
+    discovery --> alias["Jev compares pairs of names"]
+    alias --> grouping["Code groups supported aliases and flags conflicts"]
+    grouping --> qualify{"Does this candidate qualify as an entity?"}
+    layout -->|Map place proposals| qualify
+    qualify -->|Supported yes| type["Ask Jev for one of seven entity types"]
+    qualify -->|Rejected or unresolved| record["Retain decision and evidence"]
+    type -->|Supported type| entity["Save a document-local entity"]
+    type -->|Unresolved| record
+    layout --> context["Evaluate passages and follow a continuing subject"]
+    entity --> context

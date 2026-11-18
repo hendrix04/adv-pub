@@ -1,0 +1,8 @@
+flowchart TD
+    start["A block has a supported subject"] --> next{"Unvisited next block in this section?"}
+    next -->|No| done["End this chain"]
+    next -->|Yes| ask["Ask whether the next block continues this subject"]
+    ask --> decision{"Supported yes?"}
+    decision -->|Yes| advance["Record decision and advance one block"]
+    advance --> next
+    decision -->|No or unresolved| stop["Record decision and stop this chain"]
