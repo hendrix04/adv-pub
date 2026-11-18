@@ -1,0 +1,7 @@
+export const meta = {
+  name: "ap28-v3-pilot-review",
+  description: "Targeted independent review of newly admitted entities in the 0.80 Q06 trial",
+  phases: [{ title: "Source review" }],
+};
+const review = await agent(`Use the current project workspace. Read AGENTS.md, the latest AP-28 scope ledger, .kiro/execution/AP-28/live/fresh/calibration/practical-thresholds/pilot-01-verdict.md and trial-policy-v3.json. Compare complete document 01 source against v1 operation 712a3967-a24f-4001-b733-5b27d76e781d, v2 operation 9399ac89-d995-452f-b61a-7c1a33722167, and v3 operation 2c7b347b-c5b6-449a-bf01-c70fa1d83b9c under .kiro/execution/AP-28/live/fresh/discovery-inputs/01/classifications/. Focus on all v3 newly emitted or changed entities, especially Unified Church, Dogma, Earth, N'Garal, and Earth's demon-purge; Q05 grouping conflicts; missed central names; and any wrong type/qualification. Independently inspect original UTF-8 source spans, raw answers, and stage lineage. State whether v3 is useful for 02–06 tuning and what blocks freeze/acceptance. Save .kiro/execution/AP-28/live/fresh/calibration/practical-thresholds/pilot-01-v3-review.md. No live calls, application changes, policy edits, ledger edits, or task status changes.`, { phase: "Source review", label: "Review 0.80 pilot", schema: { type: "object", additionalProperties: false, required: ["status", "path", "summary"], properties: { status: { enum: ["READY", "BLOCKED"] }, path: { type: "string" }, summary: { type: "string" } } } });
+return review;

@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jev Lab · Adventurers Pub</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='12' fill='%23275248'/%3E%3Cpath d='M12 12h16v12c0 8-16 8-16 0' fill='none' stroke='%23f8f6ee' stroke-width='4'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/responsive.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Jev Lab home"><span class="brand-mark">j<span>·</span></span><span>Jev Lab<small>ADVENTURERS PUB</small></span></a>
+    <div class="connection"><span id="status-dot" class="dot pending"></span><span id="connection-status">Connecting…</span><span id="model-label" class="model-label"></span><button id="check-connection" class="button small" hidden>Retry connection</button></div>
+    <button id="run" class="button primary" disabled><span id="run-label">Run Jev</span><span aria-hidden="true">↗</span></button>
+  </header>
+  <main>
+    <nav class="tabs" aria-label="Workspace">
+      <button class="tab active" data-tab="workbench" aria-selected="true">Workbench</button>
+      <button class="tab" data-tab="pipeline" aria-selected="false">How the pipeline uses Jev</button>
+      <button class="tab" data-tab="history" aria-selected="false">Run history <span id="history-count" class="count">0</span></button>
+    </nav>
+    <div id="message" class="message" role="status" hidden></div>
+    <section id="workbench" class="tab-panel">
+      <div class="intro"><div><p class="eyebrow">A QUESTION WORKBENCH</p><h1>Full context. Clearer questions.</h1><p>Try a known failure, change the wording, and see what Jev actually returns.</p></div><div class="intro-note"><span>Live requests</span><small>No pipeline thresholds.<br>Nothing is added to campaign knowledge.</small></div></div>
+      <section class="quickstarts" aria-labelledby="quickstart-title">
+        <div class="section-heading"><h2 id="quickstart-title">Start with a familiar case</h2><span>Everything stays editable</span></div>
+        <div id="presets" class="preset-list"></div>
+        <p id="experiment-description" class="case-description"></p>
+      </section>
+      <div class="workspace-grid">
+        <section class="panel source-panel">
+          <div class="panel-heading"><div><span class="step">01</span><h2>Context</h2></div><div class="toolbar"><button id="import-source" class="button small">Import file</button><button id="clear-source" class="icon-button" title="Clear context">Clear</button></div></div>
+          <div class="document-picker"><label for="document">Load a project document</label><select id="document"><option value="">Choose a document…</option></select></div>
+          <label class="field-label" for="source">Source or content</label>
+          <textarea id="source" class="source-editor" spellcheck="false" placeholder="Paste lore, a support ticket, a conversation, or any other content."></textarea>
+          <div class="source-meta"><span id="source-size"></span><span>Sent in full</span></div>
+          <details class="extra-state"><summary>Additional context &amp; rules <span id="extra-state-count"></span></summary><p>Macros supply their rules here. Add any named fields your question needs.</p><textarea id="extra-state" class="json-editor" spellcheck="false" aria-label="Additional state JSON">{}</textarea></details>
+        </section>
+        <section class="panel questions-panel">
+          <div class="panel-heading"><div><span class="step">02</span><h2>Questions <span id="question-count" class="count"></span></h2></div><span class="subtle">Choice · Yes/no · Score</span></div>
+          <div class="macro-picker"><label class="field-label" for="macro">Question macro</label><div class="inline"><select id="macro"></select><button id="load-macro" class="button small">Load</button><button id="add-macro" class="button small">+ Add</button></div><p id="macro-description"></p></div>
+          <div id="questions"></div>
+          <button id="add-custom" class="button full-width">+ Add a custom question</button>
+        </section>
+      </div>
+      <section class="panel request-panel">
+        <div class="panel-heading"><div><span class="step">03</span><h2>Request</h2></div><div class="toolbar"><button id="copy-request" class="button small">Copy JSON</button><button id="export-request" class="button small">Download</button><button id="import-request" class="button small">Import JSON</button></div></div>
+        <details id="request-details"><summary>Inspect or edit the exact request <span id="request-status" class="validity">Validating…</span></summary>
+          <div class="request-tools"><label class="toggle"><input type="checkbox" id="json-mode"> Edit raw JSON</label><span id="json-help">The preview updates as you edit.</span></div>
+          <textarea id="request-json" class="json-editor request-editor" spellcheck="false" aria-label="Exact Jev request JSON" readonly></textarea>
+          <p class="subtle">Raw mode accepts arbitrary string, array, or object state and structured instructions. Model and provider stay pinned.</p>
+        </details>
+      </section>
+      <section id="results-panel" class="panel results-panel">
+        <div class="panel-heading"><div><span class="step">04</span><h2>Results</h2></div><div class="toolbar"><span id="result-meta" class="subtle"></span><button id="load-result" class="button small" hidden>Load this request</button><button id="export-result" class="button small" hidden>Download run</button></div></div>
+        <div id="results" aria-live="polite"><div class="empty"><div class="empty-icon">↗</div><h3>Your next result lands here.</h3><p>Pick a case, edit anything you like, and press <strong>Run Jev</strong>.<br><kbd>Ctrl</kbd> / <kbd>⌘</kbd> + <kbd>Enter</kbd> works too.</p></div></div>
+        <details id="raw-result" hidden><summary>Raw response &amp; saved request</summary><pre id="response-json"></pre></details>
+      </section>
+    </section>
+    <section id="pipeline" class="tab-panel" hidden>
+      <div class="intro"><div><p class="eyebrow">CURRENT SYSTEM</p><h1>Where the questions fit.</h1><p>Follow a document from discovery to source-local entities and their supporting text.</p></div><div class="legend"><span><i class="dot"></i> Available capabilities</span><span><i class="dashed-key"></i> Planned stages</span></div></div>
+      <div class="pipeline-overview"><div class="full-source"><strong>Complete source document</strong><span>Every semantic request receives the full source. Targets point to the names, blocks, or claims being checked.</span></div>
+        <div class="diagram">
+          <div class="diagram-lane"><div class="flow-node"><span class="node-tag">DISCOVERY</span><strong>Find possible names</strong><p>Retain original candidates and source evidence.</p></div><div class="flow-arrow" aria-hidden="true">↓</div><button class="flow-node selectable" data-macro="Q05"><span class="node-tag">Q05 · ALIASES</span><strong>Do these names name one entity?</strong><p>Also supports acronym-specific wording.</p></button><div class="flow-arrow" aria-hidden="true">↓</div><div class="flow-node code-node"><span class="node-tag">APPLICATION CODE</span><strong>Build supported alias groups</strong><p>Requires supported links between every pair. Unapplied positive links flag affected groups as conflicted.</p></div><div class="flow-arrow" aria-hidden="true">↓</div><div class="node-pair"><button class="flow-node selectable" data-macro="Q06"><span class="node-tag">Q06</span><strong>Does it qualify?</strong><p>Conflicted groups are withheld.</p></button><span class="horizontal-arrow" aria-hidden="true">→</span><button class="flow-node selectable" data-macro="Q07"><span class="node-tag">Q07</span><strong>Which type?</strong><p>Only eligible qualifying answers advance.</p></button></div><div class="flow-arrow" aria-hidden="true">↓</div><div class="flow-node"><span class="node-tag">LOCAL OUTPUT</span><strong>Qualified source-local entities</strong><p>Names, types, lineage, and retained decisions.</p></div></div>
+          <div class="diagram-lane"><button class="flow-node selectable" data-macro="Q01"><span class="node-tag">Q01–Q04 · STRUCTURE</span><strong>Make blocks and labeled sections</strong><p>Titles, list introductions, map labels, and link placement.</p></button><div class="flow-arrow" aria-hidden="true">↓</div><div class="flow-node"><span class="node-tag">APPLICATION CODE</span><strong>Find name mentions in blocks</strong><p>Local entity names and source structure feed association together.</p></div><div class="flow-arrow" aria-hidden="true">↓</div><button class="flow-node selectable" data-macro="Q08"><span class="node-tag">Q08–Q11 · ASSOCIATION</span><strong>What text discusses this entity?</strong><p>Blocks, continuing subjects, sections, and whole documents.</p></button><div class="flow-arrow" aria-hidden="true">↓</div><button class="flow-node selectable" data-macro="Q12"><span class="node-tag">Q12–Q13 · FRAMING</span><strong>How is this passage being used?</strong><p>Examples versus assertions; copied text and introductions.</p></button><div class="flow-arrow" aria-hidden="true">↓</div><div class="flow-node planned"><span class="node-tag">Q14–Q20 · PLANNED</span><strong>Claims, dates, cross-document identity</strong><p>Support, relationships, traits, dates, reconciliation, and article sections.</p></div></div>
+        </div>
+        <div class="diagram-bridge"><span>Local entities + labeled blocks → association inputs</span></div>
+        <div class="planned-bottom"><div class="flow-node planned"><strong>Accepted knowledge in Postgres</strong><p>Canonical identities, cited claims, profiles, and search projections.</p></div><span class="horizontal-arrow" aria-hidden="true">→</span><div class="flow-node planned"><strong>Supported wiki articles</strong><p>Q14 is reused to check each finished article statement.</p></div></div>
+      </div>
+      <p class="diagram-note">This view shows the available source-local capabilities and catalog order. Solid boxes do not imply that the entire path has run as one completed pipeline. Dashed stages are planned. Click a question box to load its macro.</p>
+      <section class="panel"><div class="panel-heading"><h2>Every question, at a glance</h2><span class="subtle">Select one to try it</span></div><div id="catalog-grid" class="catalog-grid"></div></section>
+      <section class="pipeline-notes"><div><h3>The model returns estimates.</h3><p>Jev supplies answers and weights. Application grouping and threshold rules decide which candidates advance. The workbench shows the raw estimates so you can examine those decisions.</p></div><div><h3>One weak link can hide an entity.</h3><p>Current alias conflicts can stop qualification. A low qualification answer can stop typing. Compare related questions together here to see where those dependencies matter.</p></div></section>
+    </section>
+    <section id="history" class="tab-panel" hidden>
+      <div class="intro"><div><p class="eyebrow">LOCAL EXPERIMENTS</p><h1>Keep the evidence.</h1><p>Reopen a result or load its request to try a different question.</p></div><button id="refresh-history" class="button">Refresh history</button></div>
+      <div id="history-list" class="history-list"></div>
+    </section>
+    <footer><span>Jev Lab · local diagnostic workspace</span><span>No automatic runs. No hidden acceptance threshold.</span></footer>
+  </main>
+  <input id="source-file" type="file" accept=".md,.txt,.json,.csv,text/*" hidden>
+  <input id="request-file" type="file" accept=".json,application/json" hidden>
+</body>
+</html>

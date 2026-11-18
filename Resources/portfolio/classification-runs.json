@@ -1,0 +1,8 @@
+[
+  {"document": "01", "status": "complete", "discovery_names": 90, "conflicted_groups": 6, "emitted": 63, "confirmed_operation_cost_usd": 0.125847918, "questions": {"Q05": 4005, "Q06": 78, "Q07": 64}},
+  {"document": "02", "status": "complete", "discovery_names": 41, "conflicted_groups": 6, "emitted": 15, "confirmed_operation_cost_usd": 0.020462568, "questions": {"Q05": 820, "Q06": 30, "Q07": 16}},
+  {"document": "03", "status": "complete", "discovery_names": 59, "conflicted_groups": 12, "emitted": 31, "confirmed_operation_cost_usd": 0.050016246, "questions": {"Q05": 1711, "Q06": 40, "Q07": 33}},
+  {"document": "04", "status": "complete", "discovery_names": 41, "conflicted_groups": 6, "emitted": 20, "confirmed_operation_cost_usd": 0.02669751, "questions": {"Q05": 820, "Q06": 25, "Q07": 22}},
+  {"document": "05", "status": "complete", "discovery_names": 12, "conflicted_groups": 2, "emitted": 4, "confirmed_operation_cost_usd": 0.002111424, "questions": {"Q05": 66, "Q06": 5, "Q07": 4}},
+  {"document": "06", "status": "complete", "discovery_names": 169, "conflicted_groups": 25, "emitted": 87, "confirmed_operation_cost_usd": 0.547905372, "questions": {"Q05": 14196, "Q06": 106, "Q07": 90}}
+]

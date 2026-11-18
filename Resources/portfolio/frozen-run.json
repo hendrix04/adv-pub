@@ -1,0 +1,39 @@
+{
+  "planned_pairs": 1540,
+  "valid_pairs": 1540,
+  "failed_attempts": 0,
+  "models": [
+    "typesafe/jev-1.13-20260917"
+  ],
+  "names": 56,
+  "cost_usd": 0.35174832,
+  "thresholds": [
+    {
+      "threshold": 0.92,
+      "accepted_links": 17,
+      "correct_positive_links": 15,
+      "old_correct_positive_links": 9,
+      "wrong_reference_links": 0,
+      "old_wrong_reference_links": 3,
+      "expanded_correct_positive_links": 17
+    },
+    {
+      "threshold": 0.75,
+      "accepted_links": 24,
+      "correct_positive_links": 20,
+      "old_correct_positive_links": 15,
+      "wrong_reference_links": 0,
+      "old_wrong_reference_links": 4,
+      "expanded_correct_positive_links": 24
+    },
+    {
+      "threshold": 0.6,
+      "accepted_links": 28,
+      "correct_positive_links": 20,
+      "old_correct_positive_links": 16,
+      "wrong_reference_links": 0,
+      "old_wrong_reference_links": 4,
+      "expanded_correct_positive_links": 25
+    }
+  ]
+}

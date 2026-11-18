@@ -1,0 +1,51 @@
+{
+  "name": "adv-pub",
+  "version": "1.0.0",
+  "description": "Adventurers Pub document discovery increment",
+  "private": true,
+  "engines": {
+    "node": ">=24 <27"
+  },
+  "scripts": {
+    "check": "biome check",
+    "format": "biome format --write",
+    "test": "tsx --test 'src/**/*.test.ts'",
+    "typecheck": "tsc --noEmit",
+    "build": "tsc",
+    "ready": "tsx src/dev/embedded-readiness.ts",
+    "jev:playground": "tsx src/dev/jev-playground/server.ts",
+    "discover": "tsx src/dev/discover-document.ts",
+    "discover:sol-once": "tsx src/dev/discover-sol-once.ts",
+    "inspect": "tsx src/dev/inspect-discovery.ts",
+    "classify": "tsx src/dev/classify-document.ts",
+    "inspect:classification": "tsx src/dev/inspect-classification.ts",
+    "verify:classification": "tsx src/dev/verify-classification.ts",
+    "preflight:classification-live": "tsx src/dev/preflight-classification-live.ts",
+    "blocks": "tsx src/dev/blocks.ts",
+    "inspect:blocks": "tsx src/dev/inspect-blocks.ts",
+    "verify:blocks": "tsx src/dev/verify-blocks.ts",
+    "associate": "tsx src/dev/associate.ts",
+    "inspect:association": "tsx src/dev/inspect-association.ts",
+    "verify:association": "tsx src/dev/verify-association.ts",
+    "verify:retry-policy": "ADV_PUB_TEST_RETRY_PROBE=1 node --import tsx src/dev/discover-document.ts --new-iteration",
+    "verify:retry-artifact": "tsx src/dev/verify-retry-probe.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "type": "module",
+  "dependencies": {
+    "@hatchet-dev/typescript-sdk": "1.34.0",
+    "@openrouter/sdk": "1.4.21",
+    "mdast-util-from-markdown": "2.1.0",
+    "mdast-util-frontmatter": "2.0.1",
+    "mdast-util-gfm": "3.1.0",
+    "micromark-extension-frontmatter": "2.0.0",
+    "micromark-extension-gfm": "3.0.0",
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.15",
+    "tsx": "4.23.15",
+    "typescript": "5.9.3"
+  }
+}

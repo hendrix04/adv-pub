@@ -1,0 +1,134 @@
+{
+  "baseline": {
+    "type": "choice",
+    "instructions": "In complete_source, do target.name_a and target.name_b refer to the same entity? Apply glossary and entity_definitions to the names' contextual meanings. Use table1 and table_reading_rules to interpret table mentions together with the prose.\n\nUse the supplied campaign meaning; do not substitute external setting lore. Judge identity separately from whether either name qualifies for extraction or an article. Context can establish an alias without spelling out the full name. Consider possible spelling mistakes, former names, titles, and epithets. Distinguish an entity from people who follow it, its inhabitants, its religion, its building, and its attributes. Shared words, matching initials, association, or appearance in one table row alone do not establish identity.\n\nUse alias_examples to interpret the answer boundaries. The examples are illustrative and are not facts about complete_source. Select unclear when the supplied evidence leaves the identity unresolved or genuinely conflicting; the absence of an explicit alias statement alone does not require unclear.",
+    "criteria": {
+      "same_entity": "Both names refer to one and the same entity in their source contexts, including supported aliases, titles, epithets, former names, acronyms, or spelling variations.",
+      "different_entities": "The names identify different referents. A deity and the people who worship that deity are different referents, even when the followers' name is derived from the deity's name. For example, a name meaning 'followers of Veyra' is different from Veyra herself. The same distinction applies to a place and its inhabitants.",
+      "unclear": "The supplied context does not establish whether the names refer to the same or different referents, or a name has conflicting referents that the context does not resolve."
+    }
+  },
+  "selected": {
+    "criteria": {
+      "same_entity": "Both expressions identify exactly the same referent: the same individual, collective group, place, object, event, objective, or idea. Titles, former names, epithets, acronyms, and spelling variants can identify the same referent.",
+      "different_entities": "The expressions identify distinct referents. An individual deity and that deity's worshipers are distinct. A deity and its religion or temple are distinct. A place and its inhabitants are distinct. Names for two separate groups are distinct even if both worship the same deity.",
+      "unclear": "The context leaves the identity unresolved or conflicting."
+    },
+    "instructions": "Use complete_source, table1, glossary, and entity_definitions. Use the campaign meaning in the supplied source rather than external lore. Decide identity, not mere association or extraction eligibility. Determine what target.name_a and target.name_b denote as used in this source. A religious adjective modifying people denotes their religious affiliation or follower identity; it does not denote the individual deity they worship. A deity name used as the subject of worship denotes the deity. Are the two expressions names of the same referent?",
+    "type": "choice"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "variant": "reported-71-28-1-baseline",
+      "phase": "screen",
+      "reversed_options": false,
+      "choice": "different_entities",
+      "probabilities": {
+        "same_entity": 0.22,
+        "different_entities": 0.76,
+        "unclear": 0.02
+      },
+      "cost_usd": 0.000233394,
+      "model": "typesafe/jev-1.13-20260917"
+    },
+    {
+      "attempt": 2,
+      "variant": "referents-instead-of-aliases",
+      "phase": "screen",
+      "reversed_options": false,
+      "choice": "different_entities",
+      "probabilities": {
+        "same_entity": 0.08,
+        "different_entities": 0.92,
+        "unclear": 0
+      },
+      "cost_usd": 0.000227976,
+      "model": "typesafe/jev-1.13-20260917"
+    },
+    {
+      "attempt": 3,
+      "variant": "referents-instead-of-aliases",
+      "phase": "repeat-1",
+      "reversed_options": false,
+      "choice": "different_entities",
+      "probabilities": {
+        "same_entity": 0.1,
+        "different_entities": 0.9,
+        "unclear": 0
+      },
+      "cost_usd": 0.000227976,
+      "model": "typesafe/jev-1.13-20260917"
+    },
+    {
+      "attempt": 4,
+      "variant": "referents-instead-of-aliases",
+      "phase": "repeat-2",
+      "reversed_options": false,
+      "choice": "different_entities",
+      "probabilities": {
+        "same_entity": 0.11,
+        "different_entities": 0.88,
+        "unclear": 0.01
+      },
+      "cost_usd": 0.000227976,
+      "model": "typesafe/jev-1.13-20260917"
+    },
+    {
+      "attempt": 5,
+      "variant": "grammatical-role",
+      "phase": "screen",
+      "reversed_options": false,
+      "choice": "different_entities",
+      "probabilities": {
+        "same_entity": 0.08,
+        "different_entities": 0.92,
+        "unclear": 0
+      },
+      "cost_usd": 0.000228312,
+      "model": "typesafe/jev-1.13-20260917"
+    },
+    {
+      "attempt": 6,
+      "variant": "grammatical-role",
+      "phase": "repeat-1",
+      "reversed_options": false,
+      "choice": "different_entities",
+      "probabilities": {
+        "same_entity": 0.04,
+        "different_entities": 0.96,
+        "unclear": 0
+      },
+      "cost_usd": 0.000228312,
+      "model": "typesafe/jev-1.13-20260917"
+    },
+    {
+      "attempt": 7,
+      "variant": "grammatical-role",
+      "phase": "repeat-2",
+      "reversed_options": false,
+      "choice": "different_entities",
+      "probabilities": {
+        "same_entity": 0.06,
+        "different_entities": 0.94,
+        "unclear": 0
+      },
+      "cost_usd": 0.000228312,
+      "model": "typesafe/jev-1.13-20260917"
+    },
+    {
+      "attempt": 8,
+      "variant": "grammatical-role",
+      "phase": "option-order-check",
+      "reversed_options": true,
+      "choice": "different_entities",
+      "probabilities": {
+        "unclear": 0,
+        "different_entities": 0.93,
+        "same_entity": 0.07
+      },
+      "cost_usd": 0.000228312,
+      "model": "typesafe/jev-1.13-20260917"
+    }
+  ]
+}

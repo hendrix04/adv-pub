@@ -1,0 +1,251 @@
+{
+  "version": 1,
+  "graph": {
+    "id": "kiro-plan-feature",
+    "name": "Kiro: plan feature",
+    "description": "Idea, conversational questions, requirements/design/tasks with human review, then native task export. No implementation.",
+    "example": "Start a new Kiro spec for a feature. My idea is: [describe the outcome]. Ask me the questions needed to write requirements.",
+    "nodes": [
+      {
+        "id": "grill",
+        "label": "Idea and questions",
+        "kind": "dialog",
+        "prompt": "Follow governing project instructions and existing .kiro conventions.\nThis flow plans and exports tasks; implementation starts with separate explicit\ndispatch. Work in a new feature specification directory. An existing feature\ndirectory needs explicit user authorization and no conflicting active run.\nKeep unrelated work and application providers intact. Return BLOCKED for a\nmissing prerequisite or conflicting active work; explain the next decision.\nUse testable business acceptance criteria and reuse existing functionality.\nInput includes the idea, project context, constraints, and any approved paths:\n{{input}}\n\nClarify this idea conversationally, one focused question at a time using the\nGraph Studio dialog contract. Inspect facts available in the project yourself.\nAsk about outcomes, scope and unresolved decisions until requirements can be\nwritten. Keep questions and recommendations short. Put the complete question\nand any needed context in the dialog's question field so it appears at the\npause. Use this native dialog rather than opening another asynchronous form.\nWhen ready, summarize all agreed answers and return status READY. At the turn\nlimit, unresolved material questions mean BLOCKED, not implied agreement.\nFinishing this interview is not approval of a specification.\n",
+        "providerId": "codex",
+        "model": "gpt-6.1-sol",
+        "reasoningLevel": "xhigh",
+        "fields": [
+          {"name": "status", "type": "enum", "options": ["READY", "BLOCKED"], "description": "READY only when this step is complete; otherwise BLOCKED."}
+        ],
+        "maxAttempts": 1,
+        "maxVisits": 12,
+        "maxTurns": 30
+      },
+      {
+        "id": "requirements",
+        "label": "Draft requirements",
+        "kind": "agent",
+        "prompt": "Follow governing project instructions and existing .kiro conventions.\nThis flow plans and exports tasks; implementation starts with separate explicit\ndispatch. Work in a new feature specification directory. An existing feature\ndirectory needs explicit user authorization and no conflicting active run.\nKeep unrelated work and application providers intact. Return BLOCKED for a\nmissing prerequisite or conflicting active work; explain the next decision.\nUse testable business acceptance criteria and reuse existing functionality.\nInput includes the idea, project context, constraints, and any approved paths:\n{{input}}\nWrite or revise requirements.md from the agreed idea and answers.\nUse testable business outcomes, acceptance criteria, boundaries and relevant\nedge cases. Identify unresolved material decisions instead of assuming them.\nIncorporate feedback from all review nodes, including later specification\ncorrections. Update requirements first when downstream scope/design changes.\nInvalidate affected downstream approval records; rebuild downstream documents\nafter renewed requirements approval. Wording-only edits need not add scope.\nRead returned draft conflicts even when no downstream review occurred. Track\napplied feedback/conflict hashes in the feature revision history. Use current\napproved decisions as authority; ignore already applied or superseded feedback.\nIf remaining feedback conflicts, ask for a decision rather than resurrecting\nan older correction. Identify which feedback this new revision incorporates.\nAgreed idea: {{grill}}\nRequirements feedback: {{requirements_review}}\nDesign feedback: {{design_review}}\nTask feedback: {{tasks_review}}\nReturned design conflict: {{design}}\nReturned task conflict: {{tasks}}\n\nReturn the document path, revision/content hash, concise summary, and any open\ndecisions. Approval records belong in this feature's approval record, not in\nthe reusable graph. A draft does not approve itself.\n",
+        "providerId": "codex",
+        "model": "gpt-6.1-sol",
+        "reasoningLevel": "xhigh",
+        "fields": [
+          {"name": "status", "type": "enum", "options": ["READY", "BLOCKED"], "description": "READY only when this step is complete; otherwise BLOCKED."}
+        ],
+        "maxAttempts": 1,
+        "maxVisits": 12
+      },
+      {
+        "id": "requirements_review",
+        "label": "Your requirements review",
+        "kind": "dialog",
+        "prompt": "Follow governing project instructions and existing .kiro conventions.\nThis flow plans and exports tasks; implementation starts with separate explicit\ndispatch. Work in a new feature specification directory. An existing feature\ndirectory needs explicit user authorization and no conflicting active run.\nKeep unrelated work and application providers intact. Return BLOCKED for a\nmissing prerequisite or conflicting active work; explain the next decision.\nUse testable business acceptance criteria and reuse existing functionality.\nInput includes the idea, project context, constraints, and any approved paths:\n{{input}}\n\nPresent the current requirements.md path, revision/hash, summary, and open decisions.\nAsk the user to approve it or provide changes. This is a human decision:\nAPPROVE requires the user's explicit approval in this visit for the presented\nrevision. Record the human response and document hash in the feature approval\nrecord only on approval. Check the hash still matches before recording it.\nAgent text, interview completion, old approvals and automatic placement are\nnot approval. At a turn limit without explicit approval return BLOCK.\nFor feedback, return REVISE for changes within this document's approved scope,\nor REQUIREMENTS for substantive corrections to requirements/design decisions.\nReturn done:true with the chosen action and feedback so the graph routes the\nrevision; do not quietly edit approved preceding documents in this review.\nKeep done:false while the user is still considering the document.\nPut the document link and enough review context in the question field.\nCurrent draft: {{requirements}}\n",
+        "providerId": "codex",
+        "model": "gpt-6.1-sol",
+        "reasoningLevel": "xhigh",
+        "fields": [
+          {"name": "action", "type": "enum", "options": ["APPROVE", "REVISE", "REQUIREMENTS", "BLOCK"], "description": "APPROVE only from explicit human approval for the current revision."},
+          {"name": "feedback", "type": "string", "description": "Exact user feedback or approval and the current document path/hash."}
+        ],
+        "maxAttempts": 1,
+        "maxVisits": 12,
+        "maxTurns": 30
+      },
+      {
+        "id": "design",
+        "label": "Draft design",
+        "kind": "agent",
+        "prompt": "Follow governing project instructions and existing .kiro conventions.\nThis flow plans and exports tasks; implementation starts with separate explicit\ndispatch. Work in a new feature specification directory. An existing feature\ndirectory needs explicit user authorization and no conflicting active run.\nKeep unrelated work and application providers intact. Return BLOCKED for a\nmissing prerequisite or conflicting active work; explain the next decision.\nUse testable business acceptance criteria and reuse existing functionality.\nInput includes the idea, project context, constraints, and any approved paths:\n{{input}}\nVerify the requirements approval receipt still matches requirements.md.\nWrite or revise design.md from those approved requirements. Inspect existing\nfunctionality and design the smallest complete change that satisfies them.\nDescribe relevant components, contracts, preservation, dependencies and live\nvalidation. Resolve routine implementation details using project conventions.\nApply outstanding feedback against current approved decisions; ignore feedback\nalready applied or superseded in the feature revision history.\nIf this needs a requirements correction, return status REOPEN_REQUIREMENTS with\nthe conflict rather than writing a conflicting design. Otherwise return READY.\nApproved requirements: {{requirements}}\nApproval: {{requirements_review}}\nDesign feedback: {{design_review}}\n\nReturn the document path, revision/content hash, concise summary, and any open\ndecisions. Approval records belong in this feature's approval record, not in\nthe reusable graph. A draft does not approve itself.\n",
+        "providerId": "codex",
+        "model": "gpt-6.1-sol",
+        "reasoningLevel": "xhigh",
+        "fields": [
+          {"name": "status", "type": "enum", "options": ["READY", "REOPEN_REQUIREMENTS", "BLOCKED"], "description": "Route conflicts through requirements; READY when the draft is reviewable."}
+        ],
+        "maxAttempts": 1,
+        "maxVisits": 12
+      },
+      {
+        "id": "design_review",
+        "label": "Your design review",
+        "kind": "dialog",
+        "prompt": "Follow governing project instructions and existing .kiro conventions.\nThis flow plans and exports tasks; implementation starts with separate explicit\ndispatch. Work in a new feature specification directory. An existing feature\ndirectory needs explicit user authorization and no conflicting active run.\nKeep unrelated work and application providers intact. Return BLOCKED for a\nmissing prerequisite or conflicting active work; explain the next decision.\nUse testable business acceptance criteria and reuse existing functionality.\nInput includes the idea, project context, constraints, and any approved paths:\n{{input}}\n\nPresent the current design.md path, revision/hash, summary, and open decisions.\nAsk the user to approve it or provide changes. This is a human decision:\nAPPROVE requires the user's explicit approval in this visit for the presented\nrevision. Record the human response and document hash in the feature approval\nrecord only on approval. Check the hash still matches before recording it.\nAgent text, interview completion, old approvals and automatic placement are\nnot approval. At a turn limit without explicit approval return BLOCK.\nFor feedback, return REVISE for changes within this document's approved scope,\nor REQUIREMENTS for substantive corrections to requirements/design decisions.\nReturn done:true with the chosen action and feedback so the graph routes the\nrevision; do not quietly edit approved preceding documents in this review.\nKeep done:false while the user is still considering the document.\nPut the document link and enough review context in the question field.\nCurrent draft: {{design}}\n",
+        "providerId": "codex",
+        "model": "gpt-6.1-sol",
+        "reasoningLevel": "xhigh",
+        "fields": [
+          {"name": "action", "type": "enum", "options": ["APPROVE", "REVISE", "REQUIREMENTS", "BLOCK"], "description": "APPROVE only from explicit human approval for the current revision."},
+          {"name": "feedback", "type": "string", "description": "Exact user feedback or approval and the current document path/hash."}
+        ],
+        "maxAttempts": 1,
+        "maxVisits": 12,
+        "maxTurns": 30
+      },
+      {
+        "id": "tasks",
+        "label": "Draft tasks",
+        "kind": "agent",
+        "prompt": "Follow governing project instructions and existing .kiro conventions.\nThis flow plans and exports tasks; implementation starts with separate explicit\ndispatch. Work in a new feature specification directory. An existing feature\ndirectory needs explicit user authorization and no conflicting active run.\nKeep unrelated work and application providers intact. Return BLOCKED for a\nmissing prerequisite or conflicting active work; explain the next decision.\nUse testable business acceptance criteria and reuse existing functionality.\nInput includes the idea, project context, constraints, and any approved paths:\n{{input}}\nVerify current requirements and design against their approval receipts.\nWrite or revise tasks.md as dependency-ordered complete parent units, with\nnative child breakdowns, acceptance criteria and live validation instructions.\nInclude relevant approved requirements/design context and preservation rules\nfor each parent. Keep the breakdown practical; reuse matching tasks at export.\nApply outstanding feedback against current approved decisions; ignore feedback\nalready applied or superseded in the feature revision history.\nIf task planning needs a requirements/design decision changed, return\nREOPEN_REQUIREMENTS with the conflict. Otherwise return READY.\nApproved requirements: {{requirements}}\nApproved design: {{design}}\nDesign approval: {{design_review}}\nTask feedback: {{tasks_review}}\n\nReturn the document path, revision/content hash, concise summary, and any open\ndecisions. Approval records belong in this feature's approval record, not in\nthe reusable graph. A draft does not approve itself.\n",
+        "providerId": "codex",
+        "model": "gpt-6.1-sol",
+        "reasoningLevel": "xhigh",
+        "fields": [
+          {"name": "status", "type": "enum", "options": ["READY", "REOPEN_REQUIREMENTS", "BLOCKED"], "description": "Route conflicts through requirements; READY when the draft is reviewable."}
+        ],
+        "maxAttempts": 1,
+        "maxVisits": 12
+      },
+      {
+        "id": "tasks_review",
+        "label": "Your tasks review",
+        "kind": "dialog",
+        "prompt": "Follow governing project instructions and existing .kiro conventions.\nThis flow plans and exports tasks; implementation starts with separate explicit\ndispatch. Work in a new feature specification directory. An existing feature\ndirectory needs explicit user authorization and no conflicting active run.\nKeep unrelated work and application providers intact. Return BLOCKED for a\nmissing prerequisite or conflicting active work; explain the next decision.\nUse testable business acceptance criteria and reuse existing functionality.\nInput includes the idea, project context, constraints, and any approved paths:\n{{input}}\n\nPresent the current tasks.md path, revision/hash, summary, and open decisions.\nAsk the user to approve it or provide changes. This is a human decision:\nAPPROVE requires the user's explicit approval in this visit for the presented\nrevision. Record the human response and document hash in the feature approval\nrecord only on approval. Check the hash still matches before recording it.\nAgent text, interview completion, old approvals and automatic placement are\nnot approval. At a turn limit without explicit approval return BLOCK.\nFor feedback, return REVISE for changes within this document's approved scope,\nor REQUIREMENTS for substantive corrections to requirements/design decisions.\nReturn done:true with the chosen action and feedback so the graph routes the\nrevision; do not quietly edit approved preceding documents in this review.\nKeep done:false while the user is still considering the document.\nPut the document link and enough review context in the question field.\nCurrent draft: {{tasks}}\n",
+        "providerId": "codex",
+        "model": "gpt-6.1-sol",
+        "reasoningLevel": "xhigh",
+        "fields": [
+          {"name": "action", "type": "enum", "options": ["APPROVE", "REVISE", "REQUIREMENTS", "BLOCK"], "description": "APPROVE only from explicit human approval for the current revision."},
+          {"name": "feedback", "type": "string", "description": "Exact user feedback or approval and the current document path/hash."}
+        ],
+        "maxAttempts": 1,
+        "maxVisits": 12,
+        "maxTurns": 30
+      },
+      {
+        "id": "export",
+        "label": "Export approved tasks \u00b7 Ready",
+        "kind": "agent",
+        "prompt": "Follow governing project instructions and existing .kiro conventions.\nThis flow plans and exports tasks; implementation starts with separate explicit\ndispatch. Work in a new feature specification directory. An existing feature\ndirectory needs explicit user authorization and no conflicting active run.\nKeep unrelated work and application providers intact. Return BLOCKED for a\nmissing prerequisite or conflicting active work; explain the next decision.\nUse testable business acceptance criteria and reuse existing functionality.\nInput includes the idea, project context, constraints, and any approved paths:\n{{input}}\n\nVerify all three approval receipts against current specification files.\nExport/refresh this approved task list to native BB Tasks using the Tasks skill\nand public CLI. Match records using this feature/revision mapping to avoid\nduplicate export. Preserve unrelated records and existing task metadata.\nEach parent embeds the complete relevant requirements, acceptance criteria,\ndesign decisions, contracts, dependencies, preservation and live-validation\ninstructions, including the approved revision. Detailed child implementation\nprose stays in native child bodies; read every child body during execution.\nRecord the specification-to-task mapping in the feature directory. Report the\nhierarchy and readiness. Export ends the planning flow; dispatch is separate.\nRequirements: {{requirements}}\nDesign: {{design}}\nTasks: {{tasks}}\nTask approval: {{tasks_review}}\n",
+        "providerId": "codex",
+        "model": "gpt-6.1-sol",
+        "reasoningLevel": "xhigh",
+        "fields": [
+          {"name": "status", "type": "enum", "options": ["READY", "BLOCKED"], "description": "READY only when this step is complete; otherwise BLOCKED."}
+        ],
+        "maxAttempts": 1,
+        "maxVisits": 12
+      },
+      {
+        "id": "blocked",
+        "label": "Needs a decision",
+        "kind": "agent",
+        "prompt": "Report the blocker or exhausted planning limit and the specific next decision.\nPreserve files and leave implementation undispatched. Read the current feature\ndocuments and approval record if available. Summarize relevant feedback:\n{{grill}}\n{{requirements}}\n{{design}}\n{{tasks}}\n{{requirements_review}}\n{{design_review}}\n{{tasks_review}}\n{{export}}\nInput: {{input}}\n",
+        "providerId": "codex",
+        "model": "gpt-6.1-sol",
+        "reasoningLevel": "xhigh",
+        "fields": [],
+        "maxAttempts": 1,
+        "maxVisits": 12
+      }
+    ],
+    "edges": [
+      {"to": "grill", "from": "__start__"},
+      {
+        "to": "requirements",
+        "from": "grill",
+        "when": {"source": "field", "key": "grill.status", "op": "equals", "value": "READY"},
+        "label": "READY"
+      },
+      {"to": "blocked", "from": "grill"},
+      {
+        "to": "requirements_review",
+        "from": "requirements",
+        "when": {"source": "field", "key": "requirements.status", "op": "equals", "value": "READY"},
+        "label": "READY"
+      },
+      {"to": "blocked", "from": "requirements"},
+      {
+        "to": "design",
+        "from": "requirements_review",
+        "when": {"source": "field", "key": "requirements_review.action", "op": "equals", "value": "APPROVE"},
+        "label": "APPROVE"
+      },
+      {
+        "to": "requirements",
+        "from": "requirements_review",
+        "when": {"source": "field", "key": "requirements_review.action", "op": "equals", "value": "REVISE"},
+        "label": "REVISE"
+      },
+      {
+        "to": "requirements",
+        "from": "requirements_review",
+        "when": {"source": "field", "key": "requirements_review.action", "op": "equals", "value": "REQUIREMENTS"},
+        "label": "REQUIREMENTS"
+      },
+      {"to": "blocked", "from": "requirements_review"},
+      {
+        "to": "design_review",
+        "from": "design",
+        "when": {"source": "field", "key": "design.status", "op": "equals", "value": "READY"},
+        "label": "READY"
+      },
+      {
+        "to": "requirements",
+        "from": "design",
+        "when": {"source": "field", "key": "design.status", "op": "equals", "value": "REOPEN_REQUIREMENTS"},
+        "label": "REOPEN_REQUIREMENTS"
+      },
+      {"to": "blocked", "from": "design"},
+      {
+        "to": "tasks",
+        "from": "design_review",
+        "when": {"source": "field", "key": "design_review.action", "op": "equals", "value": "APPROVE"},
+        "label": "APPROVE"
+      },
+      {
+        "to": "design",
+        "from": "design_review",
+        "when": {"source": "field", "key": "design_review.action", "op": "equals", "value": "REVISE"},
+        "label": "REVISE"
+      },
+      {
+        "to": "requirements",
+        "from": "design_review",
+        "when": {"source": "field", "key": "design_review.action", "op": "equals", "value": "REQUIREMENTS"},
+        "label": "REQUIREMENTS"
+      },
+      {"to": "blocked", "from": "design_review"},
+      {
+        "to": "tasks_review",
+        "from": "tasks",
+        "when": {"source": "field", "key": "tasks.status", "op": "equals", "value": "READY"},
+        "label": "READY"
+      },
+      {
+        "to": "requirements",
+        "from": "tasks",
+        "when": {"source": "field", "key": "tasks.status", "op": "equals", "value": "REOPEN_REQUIREMENTS"},
+        "label": "REOPEN_REQUIREMENTS"
+      },
+      {"to": "blocked", "from": "tasks"},
+      {
+        "to": "export",
+        "from": "tasks_review",
+        "when": {"source": "field", "key": "tasks_review.action", "op": "equals", "value": "APPROVE"},
+        "label": "APPROVE"
+      },
+      {
+        "to": "tasks",
+        "from": "tasks_review",
+        "when": {"source": "field", "key": "tasks_review.action", "op": "equals", "value": "REVISE"},
+        "label": "REVISE"
+      },
+      {
+        "to": "requirements",
+        "from": "tasks_review",
+        "when": {"source": "field", "key": "tasks_review.action", "op": "equals", "value": "REQUIREMENTS"},
+        "label": "REQUIREMENTS"
+      },
+      {"to": "blocked", "from": "tasks_review"},
+      {
+        "to": "__end__",
+        "from": "export",
+        "when": {"source": "field", "key": "export.status", "op": "equals", "value": "READY"},
+        "label": "READY"
+      },
+      {"to": "blocked", "from": "export"},
+      {"to": "__end__", "from": "blocked"}
+    ],
+    "maxSteps": 120
+  }
+}

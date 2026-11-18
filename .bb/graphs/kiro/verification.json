@@ -1,0 +1,12 @@
+{
+  "existing_files_unchanged": 23,
+  "old_presets_unchanged": 1,
+  "organizer_unchanged": true,
+  "new_graphs_match_sources": true,
+  "new_preset_matches_source": true,
+  "routing_scenarios": 47,
+  "application_runs_started": 0,
+  "checks_command": "node .bb/graphs/kiro/check-graphs.mjs",
+  "preservation_expression": "all(Path(p).is_file() and hashlib.sha256(Path(p).read_bytes()).hexdigest() == h for p, h in baseline.items())",
+  "live_agent_or_application_acceptance": "Deferred; no graph run started while existing work is active."
+}

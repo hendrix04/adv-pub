@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "adventurers-pub/document-discovery/v28",
+  "title": "Entity name candidates v28",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "entities": {
+      "type": "array",
+      "description": "Source wording that may name specific campaign entities.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string", "description": "A candidate name, which may contain multiple words, appearing in the complete source." }
+        },
+        "required": ["name"]
+      }
+    }
+  },
+  "required": ["entities"]
+}

@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "adventurers-pub/document-discovery/v25",
+  "title": "Document discovery proposals v25",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "entities": {
+      "type": "array",
+      "description": "Potential specific campaign referents. Every item is an unaccepted proposal.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "candidate_key": { "type": "string", "description": "Unique only within this response, such as entity_001." },
+          "entity_type": { "type": "string", "enum": ["Creature", "Location", "Organization", "Item", "Event", "Quest", "Concept"] },
+          "name": { "type": "string" },
+          "aliases": { "type": "array", "description": "Only source-used labels that denote this same referent; never infer followers, kinds, or constructed abbreviations as aliases.", "items": { "type": "string" } },
+          "mentions": { "$ref": "#/$defs/evidence_list" },
+          "notes": { "type": "string", "description": "Why the source indicates a specific referent; empty when no extra note is useful." }
+        },
+        "required": ["candidate_key", "entity_type", "name", "aliases", "mentions", "notes"]
+      }
+    },
+    "assertions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "assertion_key": { "type": "string" },
+          "subject_candidate_key": { "type": "string" },
+          "subject_name": { "type": "string" },
+          "predicate_or_attribute": { "type": "string" },
+          "object_candidate_key": { "type": "string" },
+          "object_text": { "type": "string" },
+          "polarity": { "type": "string", "enum": ["positive", "negative", "uncertain", "qualified"] },
+          "qualification": { "type": "string" },
+          "attribution": { "type": "string" },
+          "explicit_date_key": { "type": "string", "description": "Response-local key for the source date or period this assertion describes; empty when none applies." },
+          "evidence": { "$ref": "#/$defs/evidence_list" }
+        },
+        "required": ["assertion_key", "subject_candidate_key", "subject_name", "predicate_or_attribute", "object_candidate_key", "object_text", "polarity", "qualification", "attribution", "explicit_date_key", "evidence"]
+      }
+    },
+    "relationship_proposals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "relationship_key": { "type": "string" },
+          "subject_candidate_key": { "type": "string" },
+          "subject_name": { "type": "string" },
+          "predicate": { "type": "string", "enum": ["", "located_in", "headquartered_in", "member_of", "leads", "serves", "sponsors", "allied_with", "hostile_to", "family_of", "worships", "possesses", "created", "participated_in", "occurred_at", "concerns", "quest_giver_for", "resulted_in", "associated_with"] },
+          "object_candidate_key": { "type": "string" },
+          "object_name": { "type": "string" },
+          "proposed_predicate": { "type": "string" },
+          "polarity": { "type": "string", "enum": ["positive", "negative", "uncertain", "qualified"] },
+          "qualifier": { "type": "string" },
+          "attribution": { "type": "string" },
+          "evidence": { "$ref": "#/$defs/evidence_list" }
+        },
+        "required": ["relationship_key", "subject_candidate_key", "subject_name", "predicate", "object_candidate_key", "object_name", "proposed_predicate", "polarity", "qualifier", "attribution", "evidence"]
+      }
+    },
+    "explicit_dates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "date_key": { "type": "string" },
+          "source_wording": { "type": "string" },
+          "normalized_value": { "type": "string" },
+          "describes": { "type": "string" },
+          "attribution": { "type": "string" },
+          "evidence": { "$ref": "#/$defs/evidence_list" }
+        },
+        "required": ["date_key", "source_wording", "normalized_value", "describes", "attribution", "evidence"]
+      }
+    },
+    "useful_passages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "passage_key": { "type": "string" },
+          "why_useful": { "type": "string" },
+          "evidence": { "$ref": "#/$defs/evidence_list" }
+        },
+        "required": ["passage_key", "why_useful", "evidence"]
+      }
+    }
+  },
+  "required": ["entities", "assertions", "relationship_proposals", "explicit_dates", "useful_passages"],
+  "$defs": {
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "evidence_key": { "type": "string" },
+        "quote": { "type": "string" },
+        "before": { "type": "string" },
+        "after": { "type": "string" }
+      },
+      "required": ["evidence_key", "quote", "before", "after"]
+    },
+    "evidence_list": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/evidence" }
+    }
+  }
+}

@@ -1,0 +1,6 @@
+[
+  {"run": "window1", "correct_links": 27, "wrong_links": 0, "correct_separations": 22, "wrong_separations": 0, "review": 19, "hi": 0.75, "lo": 0.25, "overlap": true},
+  {"run": "paragraph1", "correct_links": 27, "wrong_links": 2, "correct_separations": 21, "wrong_separations": 1, "review": 17, "hi": 0.75, "lo": 0.25, "overlap": true},
+  {"run": "window2", "correct_links": 30, "wrong_links": 0, "correct_separations": 20, "wrong_separations": 0, "review": 18, "hi": 0.75, "lo": 0.25, "overlap": true},
+  {"run": "paragraph2", "correct_links": 24, "wrong_links": 2, "correct_separations": 21, "wrong_separations": 0, "review": 21, "hi": 0.75, "lo": 0.25, "overlap": true}
+]

@@ -1,0 +1,79 @@
+{
+  "entity": {
+    "contract_version": "source-local-entity-v1",
+    "local_entity_id": "local-529ae27a907f804f41548cd2",
+    "document_id": "01-unified-church-of-the-realms",
+    "source_sha256": "00ba537c8f992cc6008c5315baeebf46ccf4d5bea45e0449fba82b1b1936320d",
+    "source_candidate_ids": [
+      "candidate-22b9f377218d0656-0011"
+    ],
+    "supported_names": [
+      "Waterdeep"
+    ],
+    "aliases": [],
+    "type": "Location",
+    "source_descriptor": null,
+    "qualification_decision_id": "group-candidate-22b9f377218d0656-0011",
+    "type_decision_id": "entityType-group-candidate-22b9f377218d0656-0011",
+    "evidence": [
+      {
+        "start_byte": 826,
+        "end_byte": 835
+      },
+      {
+        "start_byte": 6828,
+        "end_byte": 6837
+      }
+    ],
+    "place_proposal_ids": [],
+    "canonical_status": "source_local_only"
+  },
+  "decisions": [
+    {
+      "question_id": "group-candidate-22b9f377218d0656-0011",
+      "question_kind": "entityQualification",
+      "raw_answer": {
+        "type": "choice",
+        "choice": "yes",
+        "confidence": 1,
+        "probabilities": {
+          "yes": 1,
+          "unclear": 0,
+          "no": 0
+        }
+      },
+      "action": {
+        "status": "supported",
+        "label": "yes",
+        "policy_version": "ap28-practical-classification-trial-v4",
+        "policy_sha256": "5f6089a332e943797a8d1f180dad593f4e04f36a76eadd35f69167bc9d41e8d2",
+        "findings": []
+      }
+    },
+    {
+      "question_id": "entityType-group-candidate-22b9f377218d0656-0011",
+      "question_kind": "entityType",
+      "raw_answer": {
+        "type": "choice",
+        "choice": "Location",
+        "confidence": 1,
+        "probabilities": {
+          "Creature": 0,
+          "Location": 1,
+          "Organization": 0,
+          "Item": 0,
+          "Event": 0,
+          "Quest": 0,
+          "Concept": 0
+        }
+      },
+      "action": {
+        "status": "supported",
+        "label": "Location",
+        "policy_version": "ap28-practical-classification-trial-v4",
+        "policy_sha256": "5f6089a332e943797a8d1f180dad593f4e04f36a76eadd35f69167bc9d41e8d2",
+        "findings": []
+      }
+    }
+  ]
+}

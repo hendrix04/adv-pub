@@ -1,0 +1,106 @@
+{
+  "version": 1,
+  "graph": {
+    "id": "kiro-complete-task-graph",
+    "name": "Kiro: complete task (Graph)",
+    "description": "One dispatched parent and all native children: prepare, implement, independent live validation, up to three repairs, finalize.",
+    "example": "Complete explicitly dispatched parent [TASK KEY] using its approved specification and shared $5 live-service ledger; leave changes uncommitted.",
+    "nodes": [
+      {
+        "id": "prepare",
+        "label": "Prepare complete parent",
+        "kind": "agent",
+        "prompt": "Follow governing project instructions. This graph completes exactly one\nexplicitly dispatched native parent and its authorized specification children.\nRead the full parent packet and every child body; canceled ancillary tasks stay\ncanceled. Preserve unrelated and prior accepted work and required application\nproviders. Leave verified changes uncommitted. Resolve routine implementation\ndetails within the approved design. Changes to approved behavior, scope,\ncontracts, providers or explicit design decisions require human reopening and\nBLOCKED. Graph workers do not move Organizer sections or start other workflows.\nUse the preparation completion plan as the boundary for outputs and evidence.\nAn interesting edge case does not add a completion requirement. When the\ncontract permits ambiguity, retain it explicitly rather than seeking a\npreferred answer. Required acceptance still needs sufficient evidence.\nTimebox each unexpected investigation to ten minutes by default, counted\nacross repairs/reviews in the packet's issue notes. At that point record what\nis established and choose an in-scope fix, permitted unresolved outcome, or\nconcrete blocker. Further diagnosis needs a specific new hypothesis/test,\nacceptance benefit and bounded time/cost estimate; record that reason first.\nRepeated probes without new evidence or a credible path mean BLOCKED.\nBefore an unplanned corpus replay, broad refactor or other expensive operation,\nidentify the criterion advanced, why existing evidence is insufficient and\nexpected duration/cost. Skip optional work without a clear benefit. Preserve\nmandatory checks; if infeasible, report the blocker rather than weakening them.\nFor large replays, use a small representative pilot to estimate throughput\nbefore the full run when compatible with the required test procedure. Check\nprogress against that estimate and stop/reassess if assumptions fail.\nProgress updates state what finished, what remains, the bottleneck and next\nmilestone. Investigation limits are agent instructions, not runtime timers;\nuse cancellable commands with progress where available.\nUse one shared $5 ledger for all live-service calls in this authorized run\nincluding backlog, retries, repairs and review. Before each billable call,\nreserve a conservative bounded maximum cost in the ledger. Reconcile actual\ncost with evidence; retain reservations when outcome/cost is uncertain.\nUnknown/unbounded costs or insufficient remaining budget block the call.\nSerialize calls. Agent model-session charges are separate. This is an agent\ninstruction, not a billing enforcement service.\n\nRun input contains the parent key, authorization, approved specification/packet\npaths and shared ledger path. Workers have no access to the initiating chat:\n{{input}}\n\nRead native Tasks and hydrate the full parent and authorized native children\ninto a packet; identify the approved spec revision and check dependencies.\nAdd a concise completion plan to that packet: required outputs and acceptance\ncriteria, mandatory checks with their commands/procedures, existing evidence\nand its applicability, optional diagnostics/cleanup, and deferred work. Identify\nplanned expensive operations and expected duration/cost where estimable. Keep\nthis plan within the approved specification; do not invent acceptance criteria.\nRefuse missing approval/authorization, completed/canceled parent, incomplete\nscope or a conflicting active run in this workspace. Reconcile interrupted\nwork before restarting. Reuse the supplied shared ledger or initialize a new\nrun ledger with a $5 cap; backlog runs always reuse their supplied ledger.\nRecord a durable implementation_attempts count for this parent/run. A restart\ndoes not reset attempts or spend. This graph admits at most four implementation\nattempts and four independent verification attempts for the parent, including\nearlier interrupted work. Return READY with complete packet and ledger paths,\ndependency evidence, revision and remaining attempt allowance, or BLOCKED.\n",
+        "providerId": "codex",
+        "model": "gpt-6.1-sol",
+        "reasoningLevel": "high",
+        "fields": [
+          {"name": "status", "type": "enum", "options": ["READY", "BLOCKED"], "description": "READY only when this step is complete; otherwise BLOCKED."}
+        ],
+        "maxAttempts": 1,
+        "maxVisits": 12
+      },
+      {
+        "id": "implement",
+        "label": "Implement or repair",
+        "kind": "agent",
+        "prompt": "Follow governing project instructions. This graph completes exactly one\nexplicitly dispatched native parent and its authorized specification children.\nRead the full parent packet and every child body; canceled ancillary tasks stay\ncanceled. Preserve unrelated and prior accepted work and required application\nproviders. Leave verified changes uncommitted. Resolve routine implementation\ndetails within the approved design. Changes to approved behavior, scope,\ncontracts, providers or explicit design decisions require human reopening and\nBLOCKED. Graph workers do not move Organizer sections or start other workflows.\nUse the preparation completion plan as the boundary for outputs and evidence.\nAn interesting edge case does not add a completion requirement. When the\ncontract permits ambiguity, retain it explicitly rather than seeking a\npreferred answer. Required acceptance still needs sufficient evidence.\nTimebox each unexpected investigation to ten minutes by default, counted\nacross repairs/reviews in the packet's issue notes. At that point record what\nis established and choose an in-scope fix, permitted unresolved outcome, or\nconcrete blocker. Further diagnosis needs a specific new hypothesis/test,\nacceptance benefit and bounded time/cost estimate; record that reason first.\nRepeated probes without new evidence or a credible path mean BLOCKED.\nBefore an unplanned corpus replay, broad refactor or other expensive operation,\nidentify the criterion advanced, why existing evidence is insufficient and\nexpected duration/cost. Skip optional work without a clear benefit. Preserve\nmandatory checks; if infeasible, report the blocker rather than weakening them.\nFor large replays, use a small representative pilot to estimate throughput\nbefore the full run when compatible with the required test procedure. Check\nprogress against that estimate and stop/reassess if assumptions fail.\nProgress updates state what finished, what remains, the bottleneck and next\nmilestone. Investigation limits are agent instructions, not runtime timers;\nuse cancellable commands with progress where available.\nUse one shared $5 ledger for all live-service calls in this authorized run\nincluding backlog, retries, repairs and review. Before each billable call,\nreserve a conservative bounded maximum cost in the ledger. Reconcile actual\ncost with evidence; retain reservations when outcome/cost is uncertain.\nUnknown/unbounded costs or insufficient remaining budget block the call.\nSerialize calls. Agent model-session charges are separate. This is an agent\ninstruction, not a billing enforcement service.\n\nRun input contains the parent key, authorization, approved specification/packet\npaths and shared ledger path. Workers have no access to the initiating chat:\n{{input}}\n\nRead the preparation packet and current attempt record. Admit and durably\nconsume one implementation slot before edits; if four slots are already used,\nreturn BLOCKED without further edits. Record interrupted attempts as consumed.\nInspect existing functionality and write a short scope ledger covering required\nchanges, preservation, explicit removals and deferred work. Implement all\nauthorized child work, incorporating reviewer findings on repairs.\nFollow the packet's completion plan. During repairs run focused regressions\nfor affected behavior; at completion satisfy all mandatory final checks.\nReuse compatible evidence when source inputs, configuration, relevant code and\nthe approved criterion still match; record its provenance and why it remains\nvalid. Rerun what the change invalidates. Fresh model calls need changed inputs\nor missing/invalid required evidence, not a desire for a different answer.\nProduce bounded implementation/evidence; independent review decides acceptance.\nAdd meaningful unit/regression tests and run required checks plus real live\nend-to-end acceptance within budget. Record commands, results, costs, changed\nfiles, acceptance coverage and unresolved issues. Hand evidence to the separate\nreviewer. Return READY for review or BLOCKED with the missing prerequisite.\nPreparation: {{prepare}}\nPrevious independent findings: {{review}}\n",
+        "providerId": "codex",
+        "model": "gpt-6-luna",
+        "reasoningLevel": "xhigh",
+        "fields": [
+          {"name": "status", "type": "enum", "options": ["READY", "BLOCKED"], "description": "READY only when this step is complete; otherwise BLOCKED."}
+        ],
+        "maxAttempts": 1,
+        "maxVisits": 4
+      },
+      {
+        "id": "review",
+        "label": "Independent validation",
+        "kind": "agent",
+        "prompt": "Follow governing project instructions. This graph completes exactly one\nexplicitly dispatched native parent and its authorized specification children.\nRead the full parent packet and every child body; canceled ancillary tasks stay\ncanceled. Preserve unrelated and prior accepted work and required application\nproviders. Leave verified changes uncommitted. Resolve routine implementation\ndetails within the approved design. Changes to approved behavior, scope,\ncontracts, providers or explicit design decisions require human reopening and\nBLOCKED. Graph workers do not move Organizer sections or start other workflows.\nUse the preparation completion plan as the boundary for outputs and evidence.\nAn interesting edge case does not add a completion requirement. When the\ncontract permits ambiguity, retain it explicitly rather than seeking a\npreferred answer. Required acceptance still needs sufficient evidence.\nTimebox each unexpected investigation to ten minutes by default, counted\nacross repairs/reviews in the packet's issue notes. At that point record what\nis established and choose an in-scope fix, permitted unresolved outcome, or\nconcrete blocker. Further diagnosis needs a specific new hypothesis/test,\nacceptance benefit and bounded time/cost estimate; record that reason first.\nRepeated probes without new evidence or a credible path mean BLOCKED.\nBefore an unplanned corpus replay, broad refactor or other expensive operation,\nidentify the criterion advanced, why existing evidence is insufficient and\nexpected duration/cost. Skip optional work without a clear benefit. Preserve\nmandatory checks; if infeasible, report the blocker rather than weakening them.\nFor large replays, use a small representative pilot to estimate throughput\nbefore the full run when compatible with the required test procedure. Check\nprogress against that estimate and stop/reassess if assumptions fail.\nProgress updates state what finished, what remains, the bottleneck and next\nmilestone. Investigation limits are agent instructions, not runtime timers;\nuse cancellable commands with progress where available.\nUse one shared $5 ledger for all live-service calls in this authorized run\nincluding backlog, retries, repairs and review. Before each billable call,\nreserve a conservative bounded maximum cost in the ledger. Reconcile actual\ncost with evidence; retain reservations when outcome/cost is uncertain.\nUnknown/unbounded costs or insufficient remaining budget block the call.\nSerialize calls. Agent model-session charges are separate. This is an agent\ninstruction, not a billing enforcement service.\n\nRun input contains the parent key, authorization, approved specification/packet\npaths and shared ledger path. Workers have no access to the initiating chat:\n{{input}}\n\nKeep application code unchanged. Admit and consume one durable independent\nverification slot before reviewing; four is the limit across resumes/restarts.\nAssess the entire parent and children against approved requirements/design,\nacceptance and preservation. Inspect developer evidence and reproduce meaningful\nchecks, including the live checks needed for confidence. Reuse adequate live\nevidence; extend testing when evidence is missing, questionable or insufficient.\nUse the packet's completion plan and current issue notes. Tie each requested\ncheck or finding to an approved acceptance/preservation condition. Explain why\nexisting evidence is insufficient and what a rerun establishes. Compatible\nevidence can remain valid; optional polishing is deferred, not a FAIL condition.\nApply the same investigation and expensive-operation rules to review work.\nUnit tests establish logic/regression coverage; business acceptance requires\nreal live evidence. Return PASS only when all required acceptance and preservation\nconditions hold, FAIL with actionable implementation findings, or BLOCKED for\na prerequisite, budget or specification conflict. Cite concrete evidence.\nPreparation: {{prepare}}\nDeveloper handoff: {{implement}}\n",
+        "providerId": "codex",
+        "model": "gpt-6.1-sol",
+        "reasoningLevel": "xhigh",
+        "fields": [
+          {"name": "verdict", "type": "enum", "options": ["PASS", "FAIL", "BLOCKED"], "description": "Independent acceptance verdict."},
+          {"name": "findings", "type": "string", "description": "Evidence, actionable failures or blocking prerequisite."}
+        ],
+        "maxAttempts": 1,
+        "maxVisits": 4
+      },
+      {
+        "id": "finalize",
+        "label": "Finalize result",
+        "kind": "agent",
+        "prompt": "Follow governing project instructions. This graph completes exactly one\nexplicitly dispatched native parent and its authorized specification children.\nRead the full parent packet and every child body; canceled ancillary tasks stay\ncanceled. Preserve unrelated and prior accepted work and required application\nproviders. Leave verified changes uncommitted. Resolve routine implementation\ndetails within the approved design. Changes to approved behavior, scope,\ncontracts, providers or explicit design decisions require human reopening and\nBLOCKED. Graph workers do not move Organizer sections or start other workflows.\nUse the preparation completion plan as the boundary for outputs and evidence.\nAn interesting edge case does not add a completion requirement. When the\ncontract permits ambiguity, retain it explicitly rather than seeking a\npreferred answer. Required acceptance still needs sufficient evidence.\nTimebox each unexpected investigation to ten minutes by default, counted\nacross repairs/reviews in the packet's issue notes. At that point record what\nis established and choose an in-scope fix, permitted unresolved outcome, or\nconcrete blocker. Further diagnosis needs a specific new hypothesis/test,\nacceptance benefit and bounded time/cost estimate; record that reason first.\nRepeated probes without new evidence or a credible path mean BLOCKED.\nBefore an unplanned corpus replay, broad refactor or other expensive operation,\nidentify the criterion advanced, why existing evidence is insufficient and\nexpected duration/cost. Skip optional work without a clear benefit. Preserve\nmandatory checks; if infeasible, report the blocker rather than weakening them.\nFor large replays, use a small representative pilot to estimate throughput\nbefore the full run when compatible with the required test procedure. Check\nprogress against that estimate and stop/reassess if assumptions fail.\nProgress updates state what finished, what remains, the bottleneck and next\nmilestone. Investigation limits are agent instructions, not runtime timers;\nuse cancellable commands with progress where available.\nUse one shared $5 ledger for all live-service calls in this authorized run\nincluding backlog, retries, repairs and review. Before each billable call,\nreserve a conservative bounded maximum cost in the ledger. Reconcile actual\ncost with evidence; retain reservations when outcome/cost is uncertain.\nUnknown/unbounded costs or insufficient remaining budget block the call.\nSerialize calls. Agent model-session charges are separate. This is an agent\ninstruction, not a billing enforcement service.\n\nRun input contains the parent key, authorization, approved specification/packet\npaths and shared ledger path. Workers have no access to the initiating chat:\n{{input}}\n\nReconcile the packet, cost/attempt ledger and latest independent verdict.\nMark the authorized parent and completed native children done only after\nindependent PASS for the current complete scope/revision. If marking records\nwas interrupted, reconcile existing status/comments before repeating it.\nOtherwise leave accurate unfinished statuses and comment with the blocker\nor exhausted repairs. A graph reaching this node is not itself acceptance.\nPreserve canceled/ancillary records. Attach concise evidence to the parent.\nReturn status PASS only after accepted task finalization; otherwise BLOCKED or\nFAIL. Return parent key, evidence paths and total live cost for the coordinator.\nPreparation: {{prepare}}\nLatest implementation: {{implement}}\nIndependent verdict: {{review}}\n",
+        "providerId": "codex",
+        "model": "gpt-6.1-sol",
+        "reasoningLevel": "high",
+        "fields": [
+          {"name": "status", "type": "enum", "options": ["PASS", "FAIL", "BLOCKED"], "description": "Final native parent result; unfinished work stays unfinished."}
+        ],
+        "maxAttempts": 1,
+        "maxVisits": 1
+      }
+    ],
+    "maxSteps": 14,
+    "edges": [
+      {"to": "prepare", "from": "__start__"},
+      {
+        "to": "implement",
+        "from": "prepare",
+        "when": {"source": "field", "key": "prepare.status", "op": "equals", "value": "READY"},
+        "label": "READY"
+      },
+      {"to": "finalize", "from": "prepare"},
+      {
+        "to": "review",
+        "from": "implement",
+        "when": {"source": "field", "key": "implement.status", "op": "equals", "value": "READY"},
+        "label": "READY"
+      },
+      {"to": "finalize", "from": "implement"},
+      {
+        "to": "finalize",
+        "from": "review",
+        "when": {"source": "field", "key": "review.verdict", "op": "equals", "value": "PASS"},
+        "label": "PASS"
+      },
+      {
+        "to": "finalize",
+        "from": "review",
+        "when": {"source": "field", "key": "review.verdict", "op": "equals", "value": "BLOCKED"},
+        "label": "BLOCKED"
+      },
+      {
+        "to": "implement",
+        "from": "review",
+        "when": {"source": "field", "key": "review.verdict", "op": "equals", "value": "FAIL"},
+        "label": "FAIL"
+      },
+      {"to": "finalize", "from": "review"},
+      {"to": "__end__", "from": "finalize"}
+    ]
+  }
+}

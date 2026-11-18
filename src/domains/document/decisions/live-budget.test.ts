@@ -1,0 +1,30 @@
+import assert from "node:assert/strict";
+import { test } from "node:test";
+import { mkdtemp, writeFile, readFile } from "node:fs/promises";
+import { join } from "node:path";
+import { tmpdir } from "node:os";
+import { reserveWorkflowCall } from "../discovery/budget.js";
+
+test("live reservations serialize ledger writes while allowing concurrent requests", async () => {
+  const directory = await mkdtemp(join(tmpdir(), "ap25-budget-"));
+  const ledger = join(directory, "ledger.json");
+  await writeFile(ledger, JSON.stringify({ spentUsd: 0, capUsd: 5, calls: [] }));
+  await assert.rejects(reserveWorkflowCall(ledger, "unknown", NaN, {}));
+  const [finish, finishParallel] = await Promise.all([reserveWorkflowCall(ledger, "first", 2, {}), reserveWorkflowCall(ledger, "parallel", 1, {})]);
+  assert.equal(JSON.parse(await readFile(ledger, "utf8")).spentUsd, 3);
+  await finish(0.5, "first retained wire response");
+  assert.equal(JSON.parse(await readFile(ledger, "utf8")).spentUsd, 1.5);
+  await finishParallel(0.25, "second retained wire response");
+  assert.equal(JSON.parse(await readFile(ledger, "utf8")).spentUsd, 0.75);
+  const over = await reserveWorkflowCall(ledger, "over", 4.5, {});
+  assert.equal(JSON.parse(await readFile(ledger, "utf8")).spentUsd, 5.25);
+  await over(4.2, "confirmed cost");
+  const uncertain = await reserveWorkflowCall(ledger, "uncertain", 4, {});
+  await uncertain();
+  const retained = JSON.parse(await readFile(ledger, "utf8"));
+  assert.equal(retained.spentUsd, 8.95);
+  assert.equal(retained.calls.at(-1).state, "reserved");
+  const overUncertain = await reserveWorkflowCall(ledger, "over-uncertain", 0.5, {});
+  await overUncertain(0.1, "confirmed cost");
+  await assert.rejects(reserveWorkflowCall(ledger, "confirmed-over", 0.1, {}), /confirmed charges exceeded/);
+});

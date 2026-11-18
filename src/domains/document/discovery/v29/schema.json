@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "adventurers-pub/document-discovery/v29",
+  "title": "Entity name candidates v29",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "entities": {
+      "type": "array",
+      "description": "Candidate entity names copied from the complete source.",
+      "items": { "type": "string" }
+    }
+  },
+  "required": ["entities"]
+}

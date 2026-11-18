@@ -1,0 +1,26 @@
+Launch the explicitly dispatched parent with Graph Studio graph
+kiro-complete-task-graph. You are Codex GPT-6.1 Sol high; the graph delegates
+implementation/repair to Luna xhigh and independent review to Sol xhigh.
+
+Read the full native parent and child bodies, approvals, and dependencies.
+Check this workspace has no conflicting active run; reconcile interrupted work.
+Prepare a run input with the parent key, authorization, approved specification
+paths, complete packet path and shared $5 live-service ledger path. Start the
+graph with that complete input, then follow its run status to a terminal result.
+Show the returned graph-run directive once. Do not treat tool launch or graph
+completion as acceptance: require the final status PASS and native parent done.
+Graph Studio owns sequencing and repair routing. Preparation defines the
+completion/evidence plan, Luna implements, independent Sol review assesses
+acceptance, and finalization updates Tasks. Do not add a supervising agent or
+another investigation/review loop. Your role is launch, status reporting and
+sequencing an explicitly selected backlog.
+
+Single dispatch authorizes one parent. An explicitly selected backlog uses a
+fixed dependency-ordered list: start a fresh graph per parent sequentially,
+reuse the same live-cost ledger, continue only after PASS, and stop at the
+first FAIL/BLOCKED or graph error. Preserve all evidence and attempt/spend
+counts when resuming. Never relaunch a task merely to reset repair limits.
+
+Leave verified changes uncommitted and report evidence or the blocker. Use
+only Graph Studio and native Tasks for this path; the existing Organizer,
+Kiro plugin/preset and kiro-execute workflow remain separate.

@@ -1,0 +1,62 @@
+{
+  "notice": "Research examples over a complete synthetic two-sentence document. These have not been sent to Jev and are not real campaign evidence. The full real source must replace complete_source in any actual project request.",
+  "http_endpoint": "https://openrouter.ai/api/alpha/decisions",
+  "http_request": {
+    "model": "typesafe/jev-1.13",
+    "provider": {"only": ["typesafe"], "allow_fallbacks": false},
+    "state": {
+      "complete_source": "The Unified Church of the Realms is a religious organization. Hereafter this document calls that organization UCR.",
+      "candidates": {
+        "long_name": "Unified Church of the Realms",
+        "short_name": "UCR"
+      },
+      "block": "Hereafter this document calls that organization UCR."
+    },
+    "questions": {
+      "alias_relation": {
+        "type": "choice",
+        "instructions": "In `complete_source`, do `candidates.long_name` and `candidates.short_name` name the same referent?",
+        "criteria": {
+          "same_referent": "The complete source supports both names as names of one referent.",
+          "different_referents": "The complete source supports the names as names of different referents.",
+          "unclear": "The complete source does not settle the relationship, or a name is used for incompatible referents."
+        }
+      },
+      "expansion_explicit": {
+        "type": "noul",
+        "instructions": "Does `complete_source` explicitly introduce `candidates.short_name` as a shortened name for `candidates.long_name`?",
+        "criteria": {
+          "true": "The source directly states the shortened-name relationship.",
+          "false": "The source does not directly state the shortened-name relationship. Context could still support an alias."
+        }
+      },
+      "block_subject_focus": {
+        "type": "score",
+        "instructions": "How much does `block` focus on the referent named by `candidates.long_name`, considering `complete_source`?",
+        "criteria": [
+          "The block does not discuss this referent.",
+          "The block mentions this referent incidentally while discussing another subject.",
+          "This referent is the block's main subject."
+        ]
+      }
+    }
+  },
+  "sdk_call_shape": {
+    "method": "client.alpha.decisions.create",
+    "argument": {
+      "decisionsRequest": {
+        "model": "typesafe/jev-1.13",
+        "provider": {"only": ["typesafe"], "allowFallbacks": false},
+        "state": "Use the exact state object above.",
+        "questions": "Use the exact questions object above."
+      }
+    },
+    "notice": "This illustrates the wrapper and camelCase routing field; the placeholder strings must be replaced by the actual objects before calling. The SDK serializes allowFallbacks as allow_fallbacks."
+  },
+  "expected_answer_shapes_only": {
+    "choice": {"type": "choice", "choice": "same_referent", "probabilities": {"same_referent": 1, "different_referents": 0, "unclear": 0}, "confidence": 1},
+    "noul": {"type": "noul", "noul": 1},
+    "score": {"type": "score", "score": 2, "legend": {"0": "The block does not discuss this referent.", "1": "The block mentions this referent incidentally while discussing another subject.", "2": "This referent is the block's main subject."}, "probabilities": {"0": 0, "1": 0, "2": 1}, "confidence": 1},
+    "notice": "Numbers here are invented values for showing schema, not model responses or accuracy predictions. Do not act on them. Companion questions do not read alias_relation's answer. Score focus is a diagnostic descriptive rubric, not canonical entity/block admission."
+  }
+}

@@ -1,0 +1,166 @@
+@media (max-width: 900px) {
+  .topbar {
+    padding: 0 20px;
+    gap: 15px;
+  }
+  .model-label {
+    display: none;
+  }
+  .intro-note {
+    display: none;
+  }
+  .workspace-grid {
+    grid-template-columns: 1fr;
+  }
+  .source-editor {
+    min-height: 280px;
+  }
+  .diagram {
+    gap: 20px;
+  }
+  .full-source {
+    display: block;
+  }
+  .full-source span {
+    display: block;
+    margin-top: 8px;
+  }
+  .diagram .node-pair {
+    display: block;
+  }
+  .diagram .node-pair .horizontal-arrow {
+    display: block;
+    text-align: center;
+    transform: rotate(90deg);
+  }
+  .diagram .node-pair .flow-node {
+    min-height: 0;
+  }
+  .source-panel {
+    margin-bottom: 0;
+  }
+}
+@media (max-width: 560px) {
+  main {
+    padding: 0 15px;
+  }
+  .topbar {
+    height: 72px;
+    padding: 0 15px;
+    gap: 10px;
+  }
+  .brand {
+    font-size: 18px;
+  }
+  .brand-mark {
+    width: 35px;
+    height: 35px;
+  }
+  .brand small {
+    font-size: 7px;
+  }
+  .connection {
+    font-size: 10px;
+    max-width: 80px;
+    line-height: 1.4;
+  }
+  .button.primary {
+    padding: 10px 13px;
+    min-width: 104px;
+    font-size: 12px;
+  }
+  .tabs {
+    gap: 17px;
+  }
+  .tab {
+    font-size: 10px;
+  }
+  .intro {
+    padding: 25px 0 20px;
+  }
+  h1 {
+    font-size: 29px;
+  }
+  .intro p:not(.eyebrow) {
+    font-size: 12px;
+  }
+  .panel {
+    padding: 15px;
+  }
+  .quickstarts {
+    padding: 15px;
+  }
+  .section-heading {
+    display: block;
+  }
+  .section-heading > span {
+    display: block;
+    margin-top: 3px;
+  }
+  .preset {
+    font-size: 10px;
+    padding: 6px 9px;
+  }
+  .document-picker {
+    display: block;
+  }
+  .document-picker label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  .macro-picker .inline {
+    flex-wrap: wrap;
+  }
+  .macro-picker .inline select {
+    width: 100%;
+  }
+  .criterion {
+    grid-template-columns: 100px 1fr 16px;
+  }
+  .diagram {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+  .planned-bottom {
+    display: block;
+  }
+  .planned-bottom .horizontal-arrow {
+    display: block;
+    text-align: center;
+    transform: rotate(90deg);
+    padding: 5px;
+  }
+  .pipeline-notes {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .legend {
+    display: none;
+  }
+  .history-header {
+    align-items: start;
+    gap: 10px;
+  }
+  .history-row .toolbar {
+    flex-direction: column;
+  }
+  .toolbar .button.small {
+    font-size: 10px;
+  }
+  .request-tools {
+    flex-direction: column;
+    align-items: start;
+  }
+  footer {
+    font-size: 9px;
+  }
+  .panel-heading .subtle {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto !important;
+    animation-duration: 2s !important;
+  }
+}
